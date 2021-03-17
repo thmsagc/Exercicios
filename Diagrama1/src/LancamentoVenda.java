@@ -7,6 +7,9 @@ public class LancamentoVenda {
     private String dataVencimento;
     private Venda venda;
 
+    /*
+    This is the constructor of class LancamentoVenda
+     */
     public LancamentoVenda(int id, double valor, int numeroParcela, String dataVencimento, Venda venda){
         this.id = id;
         this.valor = valor;

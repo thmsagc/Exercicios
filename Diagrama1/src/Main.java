@@ -1,59 +1,82 @@
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 
 public class Main {
     private static Object LancamentoVenda;
+    private static List<Cliente> Clientes = new ArrayList<Cliente>();
 
     public static void main(String args[]){
 
-        Cliente Cicero = new Cliente(0, "Cícero", "000.000.000-00", 17);
-        Cliente Ana = new Cliente(1, "Ana", "000.000.000-00", 1);
-        Cliente Weslley = new Cliente(2, "Weslley", "000.000.000-00", 1);
-        Cliente Renan = new Cliente(3, "Renan", "000.000.000-00", 1);
 
-        Venda venda1 = new Venda(0, 3, 300.00, Cicero);
+        Cadastrar_Cliente("Cícero", "000.000.000-00", 10);
+        Cadastrar_Cliente("Ana", "000.000.000-00", 10);
+        Cadastrar_Cliente("Weslley", "000.000.000-00", 20);
+        Cadastrar_Cliente("Renan", "000.000.000-00", 20);
 
-        gerarLancamentos(venda1);
-        imprimirLancamentos(venda1);
+        Venda venda1Cicero = new Venda(0, 1, 300.00, Clientes.get(0));
+        Venda venda2Cicero = new Venda(1, 3, 600.00, Clientes.get(0));
+
+        Venda venda1Ana = new Venda(2, 1, 300.00, Clientes.get(1));
+        Venda venda2Ana = new Venda(3, 2, 500.00, Clientes.get(1));
+
+        Venda venda1Weslley = new Venda(4, 1, 420.00, Clientes.get(2));
+        Venda venda2Weslley = new Venda(5, 6, 1000.00, Clientes.get(2));
+
+        Venda venda1Renan = new Venda(6, 1, 350.00, Clientes.get(3));
+        Venda venda2Renan = new Venda(7, 12, 2500.00, Clientes.get(3));
+
     }
 
-    public static void gerarLancamentos(Venda venda){
-
-        List<LancamentoVenda> lancamentos = new ArrayList<LancamentoVenda>();;
-
-        double valorParcela = venda.getValorTotal()/ venda.getQuantidadeParcelas();
-
-        Calendar c = Calendar.getInstance();
-        Date d = new Date();
-        c.setTime(d);
-        int diaAtual = c.get(Calendar.DAY_OF_MONTH);
-        c.set(Calendar.DAY_OF_MONTH, venda.getClienteVenda().getDiaVencimento());
-
-        if(venda.getClienteVenda().getDiaVencimento() > diaAtual) {
-            c.add(Calendar.MONTH, 1);
-        }
-
-        for(int i = 0; i < venda.getQuantidadeParcelas(); i++){
-            SimpleDateFormat format1 = new SimpleDateFormat("dd MM yyyy");
-            String formatedData = format1.format(c.getTime());
-            LancamentoVenda = new LancamentoVenda(0, valorParcela, i+1, formatedData, venda);
-            lancamentos.add((LancamentoVenda) LancamentoVenda);
-            c.add(Calendar.MONTH, 1);
-        }
-        venda.setLancamentosVenda(lancamentos);
+    public static void Cadastrar_Cliente(String nome, String cpf, int diaVencimento){
+        int id = Clientes.size();
+        Cliente cliente = new Cliente(id, nome, cpf, diaVencimento);
+        Clientes.add(cliente);
     }
-    public static void imprimirLancamentos(Venda venda){
-        for(int i = 0; i < venda.getLancamentosVenda().size(); i++){
-            System.out.println("\n");
-            System.out.println(venda.getLancamentosVenda().get(i).getNumeroParcela());
-            System.out.println(venda.getLancamentosVenda().get(i).getValor());
-            System.out.println(venda.getLancamentosVenda().get(i).getDataVencimento());
+
+    public static List<LancamentoVenda> Retorna_Lancamentos(List<Cliente> clientes, int mes) throws ParseException {
+        List<LancamentoVenda> lancamentosMes = new ArrayList<LancamentoVenda>();
+
+        for(int i = 0; i < clientes.size(); i++){
+            for(int j = 0; j < clientes.get(i).getVendasCliente().size(); j++){
+
+                final List<LancamentoVenda> lancamentosVendaCliente =
+                        clientes.get(i).getVendasCliente().get(j).getLancamentosVenda();
+
+                for(int k = 0; k < lancamentosVendaCliente.size(); k++){
+                    LancamentoVenda lancamento = lancamentosVendaCliente.get(k);
+                    String vencimento = lancamento.getDataVencimento();
+                    Date vencimentoData = new SimpleDateFormat("dd MM yyyy").parse(vencimento);
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(vencimentoData);
+
+                    if(c.get(Calendar.MONTH) == mes){
+                        lancamentosMes.add(lancamento);
+                    }
+                }
+            }
         }
+        return lancamentosMes;
+        //fim-Retorna_Lancamentos
     }
-    public static void print(String mensagem){
+
+    public static List<Venda> Retorna_Vendas_Dia(List<Cliente> clientes, int dia) {
+        List<Venda> vendasDia = new ArrayList<Venda>();
+
+        for(int i = 0; i < clientes.size(); i++){
+
+            if(clientes.get(i).getDiaVencimento() == dia) {
+                for (int j = 0; j < clientes.get(i).getVendasCliente().size(); j++) {
+                    final Venda venda = clientes.get(i).getVendasCliente().get(j);
+                    vendasDia.add(venda);
+                }
+            }
+        }
+        return vendasDia;
+        //fim-Retorna_Vendas
+    }
+
+    public static final void print(String mensagem){
         System.out.println(mensagem);
     }
 }
