@@ -6,7 +6,7 @@ public class Main {
     private static Object LancamentoVenda;
     private static List<Cliente> Clientes = new ArrayList<Cliente>();
 
-    public static void main(String args[]){
+    public static void main(String args[]) throws ParseException {
 
 
         Cadastrar_Cliente("Cícero", "000.000.000-00", 10);
@@ -26,6 +26,19 @@ public class Main {
         Venda venda1Renan = new Venda(6, 1, 350.00, Clientes.get(3));
         Venda venda2Renan = new Venda(7, 12, 2500.00, Clientes.get(3));
 
+        List<LancamentoVenda> lancamentosMarco = Retorna_Lancamentos(Clientes, 3);
+        List<LancamentoVenda> lancamentosAbril = Retorna_Lancamentos(Clientes, 4);
+        List<LancamentoVenda> lancamentosMaio = Retorna_Lancamentos(Clientes, 5);
+
+        System.out.println(lancamentosMarco);
+        System.out.println(lancamentosAbril);
+        System.out.println(lancamentosMaio);
+
+        List<Venda> vendasVencimento10 = Retorna_Vendas_Dia(Clientes, 10);
+        List<Venda> vendasVencimento20 = Retorna_Vendas_Dia(Clientes, 20);
+
+        System.out.println(vendasVencimento10);
+        System.out.println(vendasVencimento20);
     }
 
     public static void Cadastrar_Cliente(String nome, String cpf, int diaVencimento){
