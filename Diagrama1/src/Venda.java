@@ -10,6 +10,7 @@ public class Venda {
     private double ValorTotal;
     private Cliente clienteVenda;
     private List<LancamentoVenda> lancamentosVenda = new ArrayList<LancamentoVenda>();
+    private int DiaVencimento;
     /*
     This is the constructor of class Venda
      */
@@ -20,6 +21,7 @@ public class Venda {
         this.clienteVenda = clienteVenda;
         this.lancamentosVenda = gerarLancamentos();
         clienteVenda.addVendaCliente(this);
+        this.DiaVencimento = clienteVenda.getDiaVencimento();
     }
 
     public List<LancamentoVenda> gerarLancamentos(){
@@ -41,7 +43,7 @@ public class Venda {
         for(int i = 0; i < getQuantidadeParcelas(); i++){
             SimpleDateFormat format1 = new SimpleDateFormat("dd MM yyyy");
             String formatedData = format1.format(c.getTime());
-            LancamentoVenda lancamento = new LancamentoVenda(0, valorParcela, i+1, formatedData, this);
+            LancamentoVenda lancamento = new LancamentoVenda(i, valorParcela, i+1, formatedData, this);
             lancamentos.add((LancamentoVenda) lancamento);
             c.add(Calendar.MONTH, 1);
         }
@@ -87,18 +89,27 @@ public class Venda {
     public List<LancamentoVenda> getLancamentosVenda(){
         return this.lancamentosVenda;
     }
+
     /*
-   This method is used do set the value of the attribute clienteVenda
-   @param clienteVenda the new value for the attribute clienteVenda from object
+   This method is used do get the value of the attribute clienteVenda
+   @param clienteVenda the g value for the attribute clienteVenda from object
     */
     public Cliente getClienteVenda() {
         return this.clienteVenda;
     }
 
     /*
-        This method is used do set the value of the attribute id
-        @param id the new value for the attribute id from object
-         */
+   This method is used do get the value of the attribute DiaVencimento
+   @param DiaVencimento the g value for the attribute DiaVencimento from object
+    */
+    public int getDiaVencimento() {
+        return DiaVencimento;
+    }
+
+    /*
+            This method is used do set the value of the attribute id
+            @param id the new value for the attribute id from object
+             */
     public void setId(int id) {
         this.id = id;
     }

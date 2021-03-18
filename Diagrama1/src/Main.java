@@ -30,21 +30,46 @@ public class Main {
         List<LancamentoVenda> lancamentosAbril = Retorna_Lancamentos(Clientes, 4);
         List<LancamentoVenda> lancamentosMaio = Retorna_Lancamentos(Clientes, 5);
 
-        System.out.println(lancamentosMarco);
-        System.out.println(lancamentosAbril);
-        System.out.println(lancamentosMaio);
+        imprimirLancamentosMes(lancamentosMarco, 3);
+        imprimirLancamentosMes(lancamentosAbril, 4);
+        imprimirLancamentosMes(lancamentosMaio, 5);
 
         List<Venda> vendasVencimento10 = Retorna_Vendas_Dia(Clientes, 10);
         List<Venda> vendasVencimento20 = Retorna_Vendas_Dia(Clientes, 20);
 
-        System.out.println(vendasVencimento10);
-        System.out.println(vendasVencimento20);
+        imprimirVencimentosDia(vendasVencimento10);
+        imprimirVencimentosDia(vendasVencimento20);
     }
 
     public static void Cadastrar_Cliente(String nome, String cpf, int diaVencimento){
         int id = Clientes.size();
         Cliente cliente = new Cliente(id, nome, cpf, diaVencimento);
         Clientes.add(cliente);
+    }
+
+    public static void imprimirLancamentosMes(List<LancamentoVenda> lancamentos, int mes){
+        for(int i = 0; i < lancamentos.size(); i++){
+            System.out.println("\n");
+            final Cliente cliente = lancamentos.get(i).getVenda().getClienteVenda();
+            print("INFORMAÇÕES DO LANÇAMENTO (" + lancamentos.get(i).getId() +
+                    "/VENDA " + lancamentos.get(i).getVenda().getId() +
+                    ") DO MÊS " + mes);
+            print("Cliente: " + cliente.getNome()+ " (ID: " + cliente.getId() + ")");
+            print("Valor Total: " + lancamentos.get(i).getValor());
+            print("Vencimento: " + lancamentos.get(i).getDataVencimento());
+        }
+    }
+
+    public static void imprimirVencimentosDia(List<Venda> vendas){
+        for(int i = 0; i < vendas.size(); i++){
+            System.out.println("\n");
+            final Cliente cliente = vendas.get(i).getClienteVenda();
+            print("INFORMAÇÕES DA VENDA " + vendas.get(i).getId());
+            print("Cliente: " + cliente.getNome()+ "(ID: " + cliente.getId() + ")");
+            print("Valor: " + vendas.get(i).getValorTotal());
+            print("Parcelas: " + vendas.get(i).getQuantidadeParcelas());
+            print("Dia Vencimento: " + vendas.get(i).getDiaVencimento());
+        }
     }
 
     public static List<LancamentoVenda> Retorna_Lancamentos(List<Cliente> clientes, int mes) throws ParseException {

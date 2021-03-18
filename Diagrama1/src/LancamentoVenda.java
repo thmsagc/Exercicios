@@ -51,9 +51,18 @@ public class LancamentoVenda {
     }
 
     /*
-    This method is used do set the value of the attribute id
-    @param id the new value for the attribute id from object
+    This method is used do get the value of the attribute venda
+    @return venda the attribute venda value from object
      */
+
+    public Venda getVenda() {
+        return venda;
+    }
+
+    /*
+        This method is used do set the value of the attribute id
+        @param id the new value for the attribute id from object
+         */
     public void setId(int id) {
         this.id = id;
     }
